@@ -5,11 +5,26 @@ import { WHATSAPP_LINK } from '@/lib/constants';
 
 export function Hero() {
   return (
-    <section className="pt-20 pb-24 sm:pt-28 sm:pb-32">
-      <Container>
+    <section className="relative overflow-hidden pt-20 pb-24 sm:pt-28 sm:pb-32">
+      {/* Ambient orbs (color presence, blurred behind) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-32 top-10 h-[28rem] w-[28rem] rounded-full bg-accent/20 blur-[120px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-32 top-32 h-[34rem] w-[34rem] rounded-full bg-whatsapp/15 blur-[140px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/3 -bottom-24 h-72 w-72 rounded-full bg-whatsapp-deep/10 blur-[100px]"
+      />
+
+      <Container className="relative">
         <div className="grid items-center gap-20 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
           <div>
-            <p className="mb-8 text-xs uppercase tracking-[0.22em] text-muted">
+            <p className="mb-8 inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-muted">
+              <span className="h-1.5 w-1.5 rounded-full bg-whatsapp" />
               Coach IA — sur WhatsApp
             </p>
 
@@ -34,7 +49,12 @@ export function Hero() {
             </div>
           </div>
 
-          <div>
+          {/* Glass frame around mockup */}
+          <div className="relative">
+            <div
+              aria-hidden
+              className="absolute -inset-6 -z-10 rounded-[40px] bg-white/30 backdrop-blur-2xl ring-1 ring-white/40"
+            />
             <WhatsappMock />
           </div>
         </div>

@@ -1,6 +1,5 @@
-// Mockup WhatsApp épuré : version "screenshot calme", sans tags décoratifs,
-// ombre douce, pas de bordure dure. Contenu = vraie session Module 1 / Session 2
-// cadrée Sales (extrait du parcours Will v4).
+// Mockup WhatsApp : ombre douce, halo vert subtil derrière, header simplifié.
+// Contenu = vraie session Module 1 / Session 2 cadrée Sales.
 
 function Bubble({
   children,
@@ -21,8 +20,12 @@ function Bubble({
 
 export function WhatsappMock() {
   return (
-    <div className="mx-auto w-full max-w-[360px] select-none">
-      <div className="overflow-hidden rounded-[28px] bg-[#0B141A] shadow-[0_30px_60px_-30px_rgba(17,17,17,0.18)]">
+    <div className="relative mx-auto w-full max-w-[360px] select-none">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-8 -z-10 rounded-[48px] bg-whatsapp/15 blur-3xl"
+      />
+      <div className="overflow-hidden rounded-[28px] bg-[#0B141A] shadow-[0_40px_80px_-30px_rgba(7,94,84,0.45),0_20px_40px_-20px_rgba(17,17,17,0.25)] ring-1 ring-white/10">
         {/* Header */}
         <div className="flex items-center gap-3 bg-[#202C33] px-3 py-3 text-white">
           <div className="flex h-9 w-9 items-center justify-center rounded-full bg-paper text-ink">
@@ -35,12 +38,7 @@ export function WhatsappMock() {
         </div>
 
         {/* Messages */}
-        <div
-          className="space-y-2 px-3 py-4"
-          style={{
-            background: '#ECE5DC',
-          }}
-        >
+        <div className="space-y-2 px-3 py-4" style={{ background: '#ECE5DC' }}>
           <div className="mx-auto mb-1 inline-flex w-full justify-center">
             <span className="rounded-md bg-[#E1F2FA]/90 px-2 py-0.5 text-[10.5px] text-[#3B4A54]">
               aujourd&apos;hui

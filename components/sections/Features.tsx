@@ -29,7 +29,7 @@ const features = [
 
 export function Features() {
   return (
-    <section className="border-t border-line py-28 sm:py-40">
+    <section className="border-t border-line bg-paperWarm py-28 sm:py-40">
       <Container>
         <div className="mb-20 max-w-2xl">
           <p className="text-xs uppercase tracking-[0.22em] text-muted">

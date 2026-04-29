@@ -4,10 +4,13 @@ import { WHATSAPP_LINK } from '@/lib/constants';
 
 export function Nav() {
   return (
-    <header className="border-b border-line">
+    <header className="sticky top-0 z-40 border-b border-line/60 bg-paper/70 backdrop-blur-xl">
       <Container>
         <nav className="flex h-16 items-center justify-between">
-          <a href="/" className="display-italic text-2xl tracking-tightish text-ink">
+          <a
+            href="/"
+            className="display-italic text-2xl tracking-tightish text-ink"
+          >
             Will
           </a>
 
