@@ -33,8 +33,20 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section id="faq" className="border-t border-line py-28 sm:py-40">
-      <Container>
+    <section
+      id="faq"
+      className="relative overflow-hidden border-t border-line py-28 sm:py-40"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-32 top-20 h-96 w-96 rounded-full bg-whatsapp/15 blur-[140px]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-40 bottom-10 h-[26rem] w-[26rem] rounded-full bg-accent/10 blur-[120px]"
+      />
+
+      <Container className="relative">
         <div className="grid gap-16 lg:grid-cols-[1fr_1.6fr]">
           <div>
             <p className="text-xs uppercase tracking-[0.22em] text-muted">FAQ</p>
@@ -52,24 +64,26 @@ export function FAQ() {
             </p>
           </div>
 
-          <ul className="divide-y divide-line border-y border-line">
-            {faqs.map((f) => (
-              <li key={f.q}>
-                <details className="group py-7">
-                  <summary className="flex cursor-pointer list-none items-baseline justify-between gap-8 text-lg tracking-tightish">
-                    <span>{f.q}</span>
-                    <span
-                      aria-hidden
-                      className="select-none text-xl font-light leading-none text-muted transition-transform group-open:rotate-45"
-                    >
-                      +
-                    </span>
-                  </summary>
-                  <p className="mt-4 max-w-prose2 text-muted">{f.a}</p>
-                </details>
-              </li>
-            ))}
-          </ul>
+          <div className="rounded-3xl bg-white/40 p-2 ring-1 ring-white/50 backdrop-blur-xl sm:p-4">
+            <ul className="divide-y divide-line/70">
+              {faqs.map((f) => (
+                <li key={f.q}>
+                  <details className="group px-4 py-5 sm:px-5 sm:py-6">
+                    <summary className="flex cursor-pointer list-none items-baseline justify-between gap-8 text-lg tracking-tightish">
+                      <span>{f.q}</span>
+                      <span
+                        aria-hidden
+                        className="select-none text-xl font-light leading-none text-muted transition-transform group-open:rotate-45"
+                      >
+                        +
+                      </span>
+                    </summary>
+                    <p className="mt-4 max-w-prose2 text-muted">{f.a}</p>
+                  </details>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Container>
     </section>
