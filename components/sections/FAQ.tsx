@@ -33,36 +33,34 @@ const faqs = [
 
 export function FAQ() {
   return (
-    <section id="faq" className="border-t border-line/60 py-24 sm:py-32">
+    <section id="faq" className="border-t border-line py-28 sm:py-40">
       <Container>
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr]">
+        <div className="grid gap-16 lg:grid-cols-[1fr_1.6fr]">
           <div>
-            <p className="text-sm uppercase tracking-[0.18em] text-muted">FAQ</p>
-            <h2 className="mt-4 text-4xl tracking-tighter2 sm:text-5xl">
-              Les questions{' '}
-              <span className="display-italic text-accent">qui reviennent</span>.
+            <p className="text-xs uppercase tracking-[0.22em] text-muted">FAQ</p>
+            <h2 className="mt-5 text-4xl tracking-tighter2 sm:text-5xl">
+              Les questions qui reviennent.
             </h2>
-            <p className="mt-6 text-sm text-muted">
-              Une autre question ? Écris-nous à{' '}
+            <p className="mt-7 text-sm text-muted">
+              Une autre question ?{' '}
               <a
                 href="mailto:hello@will-coach.com"
                 className="text-ink underline underline-offset-4 hover:text-accent"
               >
                 hello@will-coach.com
               </a>
-              .
             </p>
           </div>
 
           <ul className="divide-y divide-line border-y border-line">
             {faqs.map((f) => (
               <li key={f.q}>
-                <details className="group py-6">
-                  <summary className="flex cursor-pointer list-none items-start justify-between gap-6 text-lg tracking-tightish transition-colors group-hover:text-accent">
+                <details className="group py-7">
+                  <summary className="flex cursor-pointer list-none items-baseline justify-between gap-8 text-lg tracking-tightish">
                     <span>{f.q}</span>
                     <span
                       aria-hidden
-                      className="mt-1 select-none text-2xl font-light leading-none text-muted transition-transform group-open:rotate-45"
+                      className="select-none text-xl font-light leading-none text-muted transition-transform group-open:rotate-45"
                     >
                       +
                     </span>

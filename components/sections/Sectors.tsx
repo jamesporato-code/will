@@ -1,63 +1,46 @@
 import { Container } from '../Container';
 import { SECTORS } from '@/lib/constants';
 
-const sampleQuotes: Record<string, string> = {
-  sales: "« Aujourd'hui : un prompt pour relancer un prospect froid sans copier-coller. »",
-  marketing: "« Aujourd'hui : décliner un brief en 5 angles éditoriaux en 30 secondes. »",
-  consulting: "« Aujourd'hui : structurer une note client en pyramide de Minto, avec un prompt. »",
-  product: "« Aujourd'hui : écrire des user stories testables en parlant à Claude. »",
-  finance: "« Aujourd'hui : nettoyer un export Excel sale, sans VBA, juste un prompt. »",
-  rh: "« Aujourd'hui : reformuler un feedback difficile sans tomber dans l'évasif. »",
-  legal: "« Aujourd'hui : résumer un contrat de 30 pages en 5 points actionnables. »",
-  education: "« Aujourd'hui : générer 10 variantes d'une consigne pour différencier en classe. »",
-  creative: "« Aujourd'hui : casser le syndrome de la page blanche avec un prompt à 3 niveaux. »",
-  entrepreneur: "« Aujourd'hui : tester un pitch en 60 secondes face à 3 personas IA. »",
-};
-
 export function Sectors() {
   return (
-    <section id="secteurs" className="border-t border-line/60 py-24 sm:py-32">
+    <section id="secteurs" className="border-t border-line py-28 sm:py-40">
       <Container>
-        <div className="mb-14 max-w-2xl">
-          <p className="text-sm uppercase tracking-[0.18em] text-muted">Pour ton métier</p>
-          <h2 className="mt-4 text-4xl tracking-tighter2 sm:text-5xl">
-            Pas un cours générique.{' '}
-            <span className="display-italic text-accent">Le tien.</span>
+        <div className="mb-16 max-w-2xl">
+          <p className="text-xs uppercase tracking-[0.22em] text-muted">
+            Pour ton métier
+          </p>
+          <h2 className="mt-5 text-4xl tracking-tighter2 sm:text-5xl">
+            Pas un cours générique. Le tien.
           </h2>
-          <p className="mt-6 text-lg text-muted">
-            Will adapte chaque session à ton secteur. Les exemples, les outils, les
-            prompts du jour — tout est cadré sur ce que tu fais vraiment.
+          <p className="mt-7 max-w-prose2 text-lg text-muted">
+            Will adapte chaque session à ton secteur — les exemples, les outils,
+            les prompts du jour.
           </p>
         </div>
 
-        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {SECTORS.map((s) => (
+        <ul className="grid grid-cols-1 divide-y divide-line border-y border-line sm:grid-cols-2 sm:divide-y-0 sm:border-y-0 lg:grid-cols-2">
+          {SECTORS.map((s, i) => (
             <li
               key={s.slug}
-              className="group flex flex-col gap-3 rounded-xl border border-line bg-paper p-5 transition-colors hover:border-ink/25"
+              className={
+                'flex items-baseline justify-between gap-6 py-5 sm:px-2 ' +
+                'sm:border-b sm:border-line ' +
+                (i % 2 === 0 ? 'sm:border-r sm:pr-8' : 'sm:pl-8') +
+                ' ' +
+                (i < SECTORS.length - 2 ? '' : 'sm:last:border-b')
+              }
             >
-              <div className="flex items-center justify-between">
-                <span className="text-[15px] tracking-tightish text-ink">
-                  {s.label}
-                </span>
-                <span
-                  className="text-line transition-colors group-hover:text-accent"
-                  aria-hidden
-                >
-                  →
-                </span>
-              </div>
-              <p className="text-[13px] leading-relaxed text-muted">
-                {sampleQuotes[s.slug] || ''}
-              </p>
+              <span className="text-lg tracking-tightish text-ink">{s.label}</span>
+              <span className="font-mono text-xs text-muted">
+                {String(i + 1).padStart(2, '0')}
+              </span>
             </li>
           ))}
         </ul>
 
-        <p className="mt-10 max-w-xl text-sm text-muted">
-          Tu ne te reconnais pas dans cette liste ? Will s&apos;adapte aussi à un
-          métier custom — tu lui décris en deux phrases ce que tu fais et il cale
-          le parcours.
+        <p className="mt-12 max-w-xl text-sm text-muted">
+          Pas dans la liste ? Will s&apos;adapte aussi à un métier custom — décris-le
+          en deux phrases, il cale le parcours.
         </p>
       </Container>
     </section>
