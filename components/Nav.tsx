@@ -7,16 +7,29 @@ export function Nav() {
     <header className="sticky top-0 z-40 border-b border-line/60 bg-paper/85 backdrop-blur">
       <Container>
         <nav className="flex h-16 items-center justify-between">
-          <a href="/" className="flex items-center gap-2 text-ink">
-            <span className="display-italic text-2xl tracking-tightish">Will</span>
-            <span className="hidden text-sm text-muted sm:inline">— Coach IA</span>
+          <a href="/" className="flex items-center gap-2.5 text-ink">
+            <span
+              aria-hidden
+              className="flex h-7 w-7 items-center justify-center rounded-full bg-ink text-paper"
+            >
+              <span className="display-italic text-base leading-none">W</span>
+            </span>
+            <span className="display-italic text-xl tracking-tightish">Will</span>
           </a>
 
-          <div className="hidden items-center gap-8 text-sm text-muted md:flex">
-            <a href="#how" className="hover:text-ink">Comment ça marche</a>
-            <a href="#secteurs" className="hover:text-ink">Secteurs</a>
-            <a href="#pricing" className="hover:text-ink">Tarifs</a>
-            <a href="#faq" className="hover:text-ink">FAQ</a>
+          <div className="hidden items-center gap-7 text-sm text-muted md:flex">
+            <a href="#how" className="transition-colors hover:text-ink">
+              Comment ça marche
+            </a>
+            <a href="#secteurs" className="transition-colors hover:text-ink">
+              Secteurs
+            </a>
+            <a href="#pricing" className="transition-colors hover:text-ink">
+              Tarifs
+            </a>
+            <a href="#faq" className="transition-colors hover:text-ink">
+              FAQ
+            </a>
           </div>
 
           <ButtonLink
