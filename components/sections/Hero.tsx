@@ -40,7 +40,7 @@ export function Hero() {
             </p>
 
             <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-              <ButtonLink href={WHATSAPP_LINK} external variant="primary">
+              <ButtonLink href={WHATSAPP_LINK} external variant="primary" trackingSource="hero">
                 Démarrer
               </ButtonLink>
               <span className="text-sm text-muted">

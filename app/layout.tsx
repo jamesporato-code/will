@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Instrument_Serif } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 
 const inter = Inter({
@@ -34,7 +35,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${inter.variable} ${display.variable}`}>
-      <body className="bg-paper text-ink font-sans antialiased">{children}</body>
+      <body className="bg-paper text-ink font-sans antialiased">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

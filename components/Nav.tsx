@@ -34,6 +34,7 @@ export function Nav() {
             external
             variant="primary"
             className="px-5 py-2 text-sm"
+            trackingSource="nav"
           >
             Essayer
           </ButtonLink>

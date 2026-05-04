@@ -33,7 +33,7 @@ export function CTA() {
             un mot.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <ButtonLink href={WHATSAPP_LINK} external variant="primary">
+            <ButtonLink href={WHATSAPP_LINK} external variant="primary" trackingSource="cta_section">
               Démarrer sur WhatsApp
             </ButtonLink>
           </div>

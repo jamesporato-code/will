@@ -1,4 +1,7 @@
+'use client';
+
 import { ReactNode } from 'react';
+import { track } from '@vercel/analytics';
 
 type Variant = 'primary' | 'secondary' | 'ghost';
 
@@ -17,18 +20,37 @@ export function ButtonLink({
   variant = 'primary',
   className = '',
   external = false,
+  trackingSource,
 }: {
   href: string;
   children: ReactNode;
   variant?: Variant;
   className?: string;
   external?: boolean;
+  trackingSource?: string;
 }) {
   const props = external
     ? { target: '_blank', rel: 'noopener noreferrer' }
     : {};
+  const isWhatsappCTA = external && href.includes('wa.me');
+  const handleClick = isWhatsappCTA
+    ? () => {
+        try {
+          track('whatsapp_cta_click', {
+            source: trackingSource || 'unknown',
+          });
+        } catch {
+          // Analytics ne doit jamais bloquer la navigation
+        }
+      }
+    : undefined;
   return (
-    <a href={href} className={`${base} ${variants[variant]} ${className}`} {...props}>
+    <a
+      href={href}
+      onClick={handleClick}
+      className={`${base} ${variants[variant]} ${className}`}
+      {...props}
+    >
       {children}
     </a>
   );

@@ -35,6 +35,7 @@ export function Pricing() {
             cta={PRICING.trial.cta}
             ctaHref={WHATSAPP_LINK}
             variant="ghost"
+            trackingSource="pricing_trial"
           />
           <PricingCard
             name={PRICING.pro.name}
@@ -45,6 +46,7 @@ export function Pricing() {
             cta={PRICING.pro.cta}
             ctaHref={WHATSAPP_LINK}
             variant="primary"
+            trackingSource="pricing_pro"
           />
         </div>
 
@@ -65,6 +67,7 @@ function PricingCard({
   cta,
   ctaHref,
   variant,
+  trackingSource,
 }: {
   name: string;
   price: string;
@@ -74,6 +77,7 @@ function PricingCard({
   cta: string;
   ctaHref: string;
   variant: 'ghost' | 'primary';
+  trackingSource?: string;
 }) {
   const isPrimary = variant === 'primary';
   return (
@@ -132,6 +136,7 @@ function PricingCard({
           href={ctaHref}
           external
           variant={isPrimary ? 'primary' : 'ghost'}
+          trackingSource={trackingSource}
         >
           {cta}
         </ButtonLink>
