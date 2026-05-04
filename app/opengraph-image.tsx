@@ -26,99 +26,64 @@ export default async function OG() {
           justifyContent: 'space-between',
           padding: '72px 80px',
           position: 'relative',
-          fontFamily: 'serif',
         }}
       >
-        {/* Halo whatsapp en bas a droite */}
-        <div
-          style={{
-            position: 'absolute',
-            right: -120,
-            bottom: -120,
-            width: 480,
-            height: 480,
-            borderRadius: '50%',
-            background: WHATSAPP,
-            opacity: 0.18,
-            filter: 'blur(80px)',
-          }}
-        />
-        {/* Halo accent en haut a gauche */}
-        <div
-          style={{
-            position: 'absolute',
-            left: -80,
-            top: -80,
-            width: 320,
-            height: 320,
-            borderRadius: '50%',
-            background: ACCENT,
-            opacity: 0.18,
-            filter: 'blur(80px)',
-          }}
-        />
-
         {/* Eyebrow */}
         <div
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: 14,
             color: MUTED,
             fontSize: 22,
             letterSpacing: 6,
             textTransform: 'uppercase',
-            fontFamily: 'sans-serif',
           }}
         >
-          <span
+          <div
             style={{
               width: 12,
               height: 12,
-              borderRadius: '50%',
+              borderRadius: 999,
               background: WHATSAPP,
-              display: 'inline-block',
+              marginRight: 14,
             }}
           />
-          Coach IA — sur WhatsApp
+          <div>Coach IA — sur WhatsApp</div>
         </div>
 
         {/* Wordmark + tagline */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div
             style={{
               fontSize: 220,
-              lineHeight: 0.95,
+              lineHeight: 1,
               color: INK,
               fontStyle: 'italic',
               letterSpacing: -8,
               display: 'flex',
-              alignItems: 'baseline',
-              gap: 24,
             }}
           >
-            <span>Will</span>
-            <span
+            <div>Will</div>
+            <div
               style={{
                 fontStyle: 'normal',
-                fontFamily: 'sans-serif',
-                fontSize: 60,
+                fontSize: 220,
                 color: ACCENT,
-                letterSpacing: -2,
-                fontWeight: 500,
+                marginLeft: 12,
               }}
             >
               .
-            </span>
+            </div>
           </div>
           <div
             style={{
               fontSize: 44,
               color: INK,
-              fontFamily: 'sans-serif',
               letterSpacing: -1,
+              marginTop: 28,
               maxWidth: 900,
               lineHeight: 1.15,
+              display: 'flex',
             }}
           >
             Un coach IA pour ton métier. 5 minutes par jour, sur WhatsApp.
@@ -133,13 +98,12 @@ export default async function OG() {
             alignItems: 'center',
             color: MUTED,
             fontSize: 22,
-            fontFamily: 'sans-serif',
           }}
         >
-          <span>7 jours offerts, sans carte.</span>
-          <span style={{ color: WHATSAPP_DEEP, fontWeight: 600 }}>
+          <div>7 jours offerts, sans carte.</div>
+          <div style={{ color: WHATSAPP_DEEP, fontWeight: 600 }}>
             will-coach.com
-          </span>
+          </div>
         </div>
       </div>
     ),
