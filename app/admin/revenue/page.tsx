@@ -1,5 +1,6 @@
 import { adminFetch } from '@/lib/admin-api';
 import { CancelSubButton } from './CancelSubButton';
+import { RefundButton } from './RefundButton';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Revenue — Will admin' };
@@ -19,11 +20,14 @@ type Subscription = {
 };
 
 type Payment = {
+  id: string;
   amount: number;
   currency: string;
   customerEmail: string | null;
   date: string;
   description: string | null;
+  refunded?: boolean;
+  amount_refunded?: number;
 };
 
 type RevenueResp = {
@@ -90,28 +94,7 @@ export default async function RevenuePage() {
 
       <section>
         <SectionTitle>Paiements récents (30 jours)</SectionTitle>
-        <Table
-          rows={data.recentPayments || []}
-          columns={[
-            { key: 'date', label: 'Date' },
-            { key: 'customerEmail', label: 'Email' },
-            { key: 'amount', label: 'Montant', align: 'right' },
-            { key: 'description', label: 'Description' },
-          ]}
-          renderCell={(row, col) => {
-            if (col.key === 'date') return <span>{fmtDate(row.date)}</span>;
-            if (col.key === 'amount') {
-              return (
-                <span>
-                  {row.amount.toFixed(2)} {row.currency.toUpperCase()}
-                </span>
-              );
-            }
-            const v = (row as unknown as Record<string, unknown>)[String(col.key)];
-            return <span>{(v as string) || '—'}</span>;
-          }}
-          empty="Aucun paiement sur 30 jours"
-        />
+        <PaymentsTable payments={data.recentPayments || []} />
       </section>
     </div>
   );
@@ -122,6 +105,74 @@ type Column<T> = {
   label: string;
   align?: 'left' | 'right';
 };
+
+function PaymentsTable({ payments }: { payments: Payment[] }) {
+  if (payments.length === 0) {
+    return (
+      <div className="rounded-lg border border-[#21262d] bg-[#0d1117] p-8 text-center text-sm text-[#8b949e]">
+        Aucun paiement sur 30 jours.
+      </div>
+    );
+  }
+  return (
+    <div className="overflow-hidden rounded-lg border border-[#21262d] bg-[#0d1117]">
+      <table className="w-full text-sm">
+        <thead className="bg-[#161b22] text-[11px] uppercase tracking-wider text-[#8b949e]">
+          <tr>
+            <th className="px-4 py-3 text-left">Date</th>
+            <th className="px-4 py-3 text-left">Email</th>
+            <th className="px-4 py-3 text-right">Montant</th>
+            <th className="px-4 py-3 text-left">Statut</th>
+            <th className="px-4 py-3 text-left">Description</th>
+            <th className="px-4 py-3 text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {payments.map((p) => (
+            <tr key={p.id} className="border-t border-[#21262d] hover:bg-[#161b22]">
+              <td className="px-4 py-3 text-[11px] text-[#8b949e]">
+                {fmtDate(p.date)}
+              </td>
+              <td className="px-4 py-3 text-[#c9d1d9]">{p.customerEmail || '—'}</td>
+              <td className="px-4 py-3 text-right font-mono text-[#c9d1d9]">
+                {p.amount.toFixed(2)} {p.currency.toUpperCase()}
+                {p.amount_refunded && p.amount_refunded > 0 ? (
+                  <span className="ml-2 text-[10px] text-[#e3b341]">
+                    -{p.amount_refunded.toFixed(2)}
+                  </span>
+                ) : null}
+              </td>
+              <td className="px-4 py-3">
+                {p.refunded ? (
+                  <span className="rounded-full bg-[#d2992233] px-2 py-0.5 text-[10px] font-semibold text-[#e3b341]">
+                    Remboursé
+                  </span>
+                ) : p.amount_refunded && p.amount_refunded > 0 ? (
+                  <span className="rounded-full bg-[#d2992233] px-2 py-0.5 text-[10px] font-semibold text-[#e3b341]">
+                    Partiel
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-[#23863633] px-2 py-0.5 text-[10px] font-semibold text-[#3fb950]">
+                    Reçu
+                  </span>
+                )}
+              </td>
+              <td className="px-4 py-3 text-[#c9d1d9]">{p.description || '—'}</td>
+              <td className="px-4 py-3 text-right">
+                {!p.refunded && (
+                  <RefundButton
+                    chargeId={p.id}
+                    amountLabel={`${p.amount.toFixed(2)} ${p.currency.toUpperCase()}`}
+                  />
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 function SubsTable({ subs }: { subs: Subscription[] }) {
   if (subs.length === 0) {
