@@ -2,18 +2,25 @@
 
 import { useState } from 'react';
 
-export function TriggerDailyButton({ userId }: { userId: number }) {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<{
-    ok: boolean;
-    msg: string;
-  } | null>(null);
+type ActionResult = { ok: boolean; msg: string };
 
-  async function trigger() {
-    setLoading(true);
-    setResult(null);
+export function TriggerDailyButton({ userId }: { userId: number }) {
+  const [dailyState, setDailyState] = useState<{ loading: boolean; result: ActionResult | null }>({
+    loading: false,
+    result: null,
+  });
+  const [actuState, setActuState] = useState<{ loading: boolean; result: ActionResult | null }>({
+    loading: false,
+    result: null,
+  });
+
+  async function trigger(
+    endpoint: string,
+    setState: typeof setDailyState
+  ) {
+    setState({ loading: true, result: null });
     try {
-      const res = await fetch(`/api/admin-proxy/trigger-daily/${userId}`, {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
       });
@@ -24,44 +31,58 @@ export function TriggerDailyButton({ userId }: { userId: number }) {
         error?: string;
       };
       if (res.ok && data.success) {
-        setResult({
-          ok: true,
-          msg: `Envoyé · ${data.type}${data.day ? ` · jour ${data.day}` : ''}`,
+        setState({
+          loading: false,
+          result: {
+            ok: true,
+            msg: `Envoyé · ${data.type}${data.day ? ` · jour ${data.day}` : ''}`,
+          },
         });
       } else {
-        setResult({
-          ok: false,
-          msg: data.error || `Erreur ${res.status}`,
+        setState({
+          loading: false,
+          result: {
+            ok: false,
+            msg: data.error || `Erreur ${res.status}`,
+          },
         });
       }
     } catch (e) {
-      setResult({
-        ok: false,
-        msg: e instanceof Error ? e.message : 'Erreur',
+      setState({
+        loading: false,
+        result: { ok: false, msg: e instanceof Error ? e.message : 'Erreur' },
       });
-    } finally {
-      setLoading(false);
     }
   }
 
   return (
-    <div className="flex items-center gap-3">
-      {result && (
-        <span
-          className={`text-xs ${
-            result.ok ? 'text-[#3fb950]' : 'text-[#ff7b72]'
-          }`}
+    <div className="flex flex-col items-end gap-2">
+      <div className="flex items-center gap-2">
+        {actuState.result && (
+          <span className={`text-xs ${actuState.result.ok ? 'text-[#3fb950]' : 'text-[#ff7b72]'}`}>
+            {actuState.result.msg}
+          </span>
+        )}
+        <button
+          onClick={() => trigger(`/api/admin-proxy/trigger-actu/${userId}`, setActuState)}
+          disabled={actuState.loading}
+          className="rounded-md bg-[#a371f7] px-3 py-2 text-xs font-medium text-white hover:bg-[#b389ff] disabled:opacity-50"
         >
-          {result.msg}
-        </span>
-      )}
-      <button
-        onClick={trigger}
-        disabled={loading}
-        className="rounded-md bg-[#1f6feb] px-4 py-2 text-sm font-medium text-white hover:bg-[#2f81f7] disabled:opacity-50"
-      >
-        {loading ? 'Envoi…' : 'Envoyer le daily'}
-      </button>
+          {actuState.loading ? 'Envoi…' : '📰 Actu IA'}
+        </button>
+        {dailyState.result && (
+          <span className={`text-xs ${dailyState.result.ok ? 'text-[#3fb950]' : 'text-[#ff7b72]'}`}>
+            {dailyState.result.msg}
+          </span>
+        )}
+        <button
+          onClick={() => trigger(`/api/admin-proxy/trigger-daily/${userId}`, setDailyState)}
+          disabled={dailyState.loading}
+          className="rounded-md bg-[#1f6feb] px-3 py-2 text-xs font-medium text-white hover:bg-[#2f81f7] disabled:opacity-50"
+        >
+          {dailyState.loading ? 'Envoi…' : '📚 Daily'}
+        </button>
+      </div>
     </div>
   );
 }
