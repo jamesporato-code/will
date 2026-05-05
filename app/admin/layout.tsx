@@ -9,6 +9,12 @@ export const metadata = {
 const navItems: { href: string; label: string }[] = [
   { href: '/admin', label: 'Dashboard' },
   { href: '/admin/users', label: 'Users' },
+  { href: '/admin/modules', label: 'Modules' },
+  { href: '/admin/cards', label: 'Cartes outils & prompts' },
+  { href: '/admin/trials', label: 'Trials' },
+  { href: '/admin/payment-issues', label: 'Payment issues' },
+  { href: '/admin/revenue', label: 'Revenue' },
+  { href: '/admin/system', label: 'Système' },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

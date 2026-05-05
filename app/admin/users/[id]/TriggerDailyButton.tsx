@@ -15,6 +15,7 @@ export function TriggerDailyButton({ userId }: { userId: number }) {
     try {
       const res = await fetch(`/api/admin-proxy/trigger-daily/${userId}`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
       });
       const data = (await res.json().catch(() => ({}))) as {
         success?: boolean;
