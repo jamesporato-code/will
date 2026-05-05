@@ -14,6 +14,7 @@ const navItems: { href: string; label: string }[] = [
   { href: '/admin/trials', label: 'Trials' },
   { href: '/admin/payment-issues', label: 'Payment issues' },
   { href: '/admin/revenue', label: 'Revenue' },
+  { href: '/admin/stripe', label: 'Stripe config' },
   { href: '/admin/system', label: 'Système' },
 ];
 

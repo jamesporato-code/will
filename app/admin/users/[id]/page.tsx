@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { adminFetch } from '@/lib/admin-api';
 import { TriggerDailyButton } from './TriggerDailyButton';
+import { CustomerPortalButton } from './CustomerPortalButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,6 +30,8 @@ type UserDetail = {
     streak: number;
     pending_action: string | null;
     pending_daily: boolean;
+    stripe_customer_id: string | null;
+    stripe_subscription_id: string | null;
     payment_failed_at: string | null;
     payment_grace_until: string | null;
     trial_reminder_j5: boolean;
@@ -130,7 +133,7 @@ export default async function UserDetailPage({
         </Card>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 md:grid-cols-3">
         <Card title="Daily">
           <Field
             label="Opt-in"
@@ -154,6 +157,23 @@ export default async function UserDetailPage({
             value={user.pending_action || '—'}
             tone={user.pending_action ? 'warn' : 'mute'}
           />
+        </Card>
+
+        <Card title="Stripe">
+          <Field
+            label="Customer ID"
+            value={user.stripe_customer_id || '—'}
+          />
+          <Field
+            label="Subscription ID"
+            value={user.stripe_subscription_id || '—'}
+          />
+          <div className="pt-2">
+            <CustomerPortalButton
+              userId={user.id}
+              hasStripeCustomer={!!user.stripe_customer_id}
+            />
+          </div>
         </Card>
 
         <Card title="Trial reminders / paiement">

@@ -1,9 +1,11 @@
 import { adminFetch } from '@/lib/admin-api';
+import { CancelSubButton } from './CancelSubButton';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Revenue — Will admin' };
 
 type Subscription = {
+  id: string;
   customerId: string;
   customerEmail: string | null;
   customerName: string | null;
@@ -11,6 +13,7 @@ type Subscription = {
   amount: number;
   currency: string;
   status: string;
+  cancelAtPeriodEnd?: boolean;
   currentPeriodEnd: string;
   created: string;
 };
@@ -73,31 +76,7 @@ export default async function RevenuePage() {
 
       <section>
         <SectionTitle>Abonnements payants</SectionTitle>
-        <Table
-          rows={payingSubs}
-          columns={[
-            { key: 'customerEmail', label: 'Email' },
-            { key: 'customerName', label: 'Nom' },
-            { key: 'plan', label: 'Plan' },
-            { key: 'amount', label: 'Montant', align: 'right' },
-            { key: 'currentPeriodEnd', label: 'Renouv.' },
-          ]}
-          renderCell={(row, col) => {
-            if (col.key === 'amount') {
-              return (
-                <span>
-                  {row.amount.toFixed(2)} {row.currency.toUpperCase()}
-                </span>
-              );
-            }
-            const v = (row as unknown as Record<string, unknown>)[String(col.key)];
-            if (col.key === 'currentPeriodEnd' || col.key === 'created') {
-              return <span>{fmtDate(v as string)}</span>;
-            }
-            return <span>{(v as string) || '—'}</span>;
-          }}
-          empty="Aucun abonnement payant"
-        />
+        <SubsTable subs={payingSubs} />
       </section>
 
       {testSubs.length > 0 && (
@@ -105,23 +84,7 @@ export default async function RevenuePage() {
           <SectionTitle>
             Abonnements test (0 €) — promo / interne
           </SectionTitle>
-          <Table
-            rows={testSubs}
-            columns={[
-              { key: 'customerEmail', label: 'Email' },
-              { key: 'customerName', label: 'Nom' },
-              { key: 'plan', label: 'Plan' },
-              { key: 'currentPeriodEnd', label: 'Renouv.' },
-            ]}
-            renderCell={(row, col) => {
-              const v = (row as unknown as Record<string, unknown>)[String(col.key)];
-              if (col.key === 'currentPeriodEnd' || col.key === 'created') {
-                return <span>{fmtDate(v as string)}</span>;
-              }
-              return <span>{(v as string) || '—'}</span>;
-            }}
-            empty=""
-          />
+          <SubsTable subs={testSubs} />
         </section>
       )}
 
@@ -159,6 +122,66 @@ type Column<T> = {
   label: string;
   align?: 'left' | 'right';
 };
+
+function SubsTable({ subs }: { subs: Subscription[] }) {
+  if (subs.length === 0) {
+    return (
+      <div className="rounded-lg border border-[#21262d] bg-[#0d1117] p-8 text-center text-sm text-[#8b949e]">
+        Aucun abonnement.
+      </div>
+    );
+  }
+  return (
+    <div className="overflow-hidden rounded-lg border border-[#21262d] bg-[#0d1117]">
+      <table className="w-full text-sm">
+        <thead className="bg-[#161b22] text-[11px] uppercase tracking-wider text-[#8b949e]">
+          <tr>
+            <th className="px-4 py-3 text-left">Email</th>
+            <th className="px-4 py-3 text-left">Nom</th>
+            <th className="px-4 py-3 text-left">Plan</th>
+            <th className="px-4 py-3 text-right">Montant</th>
+            <th className="px-4 py-3 text-left">Statut</th>
+            <th className="px-4 py-3 text-left">Renouv.</th>
+            <th className="px-4 py-3 text-right">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {subs.map((s) => (
+            <tr key={s.id} className="border-t border-[#21262d] hover:bg-[#161b22]">
+              <td className="px-4 py-3 text-[#c9d1d9]">
+                {s.customerEmail || '—'}
+              </td>
+              <td className="px-4 py-3 text-[#c9d1d9]">
+                {s.customerName || '—'}
+              </td>
+              <td className="px-4 py-3 text-[#c9d1d9]">{s.plan}</td>
+              <td className="px-4 py-3 text-right font-mono text-[#c9d1d9]">
+                {s.amount.toFixed(2)} {s.currency.toUpperCase()}
+              </td>
+              <td className="px-4 py-3">
+                {s.cancelAtPeriodEnd ? (
+                  <span className="rounded-full bg-[#d2992233] px-2 py-0.5 text-[10px] font-semibold text-[#e3b341]">
+                    Cancel à fin
+                  </span>
+                ) : (
+                  <span className="rounded-full bg-[#23863633] px-2 py-0.5 text-[10px] font-semibold text-[#3fb950]">
+                    {s.status}
+                  </span>
+                )}
+              </td>
+              <td className="px-4 py-3 text-[11px] text-[#8b949e]">
+                {fmtDate(s.currentPeriodEnd)}
+              </td>
+              <td className="px-4 py-3 text-right">
+                <CancelSubButton subId={s.id} />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
 
 function Table<T>({
   rows,
