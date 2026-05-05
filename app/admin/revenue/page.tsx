@@ -42,6 +42,11 @@ export default async function RevenuePage() {
     );
   }
   const data = res.data;
+  // Separe les abos qui paient vraiment des abos test (promo 100% / 0€).
+  // Les abos a 0 polluent le KPI 'Abos actifs' alors qu'ils ne contribuent rien.
+  const allSubs = data.activeSubs || [];
+  const payingSubs = allSubs.filter((s) => s.amount > 0);
+  const testSubs = allSubs.filter((s) => s.amount === 0);
   return (
     <div className="space-y-6">
       <header>
@@ -51,20 +56,25 @@ export default async function RevenuePage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <Card label="MRR" value={fmtMoney(data.mrr || 0)} accent="purple" />
         <Card label="Revenu 30j" value={fmtMoney(data.totalRevenue30d || 0)} />
         <Card
-          label="Abos actifs"
-          value={String(data.activeSubs?.length || 0)}
+          label="Abos payants"
+          value={String(payingSubs.length)}
           accent="green"
+        />
+        <Card
+          label="Abos test (0 €)"
+          value={String(testSubs.length)}
+          accent={testSubs.length > 0 ? 'yellow' : undefined}
         />
       </div>
 
       <section>
-        <SectionTitle>Abonnements actifs</SectionTitle>
+        <SectionTitle>Abonnements payants</SectionTitle>
         <Table
-          rows={data.activeSubs || []}
+          rows={payingSubs}
           columns={[
             { key: 'customerEmail', label: 'Email' },
             { key: 'customerName', label: 'Nom' },
@@ -86,9 +96,34 @@ export default async function RevenuePage() {
             }
             return <span>{(v as string) || '—'}</span>;
           }}
-          empty="Aucun abonnement actif"
+          empty="Aucun abonnement payant"
         />
       </section>
+
+      {testSubs.length > 0 && (
+        <section>
+          <SectionTitle>
+            Abonnements test (0 €) — promo / interne
+          </SectionTitle>
+          <Table
+            rows={testSubs}
+            columns={[
+              { key: 'customerEmail', label: 'Email' },
+              { key: 'customerName', label: 'Nom' },
+              { key: 'plan', label: 'Plan' },
+              { key: 'currentPeriodEnd', label: 'Renouv.' },
+            ]}
+            renderCell={(row, col) => {
+              const v = (row as unknown as Record<string, unknown>)[String(col.key)];
+              if (col.key === 'currentPeriodEnd' || col.key === 'created') {
+                return <span>{fmtDate(v as string)}</span>;
+              }
+              return <span>{(v as string) || '—'}</span>;
+            }}
+            empty=""
+          />
+        </section>
+      )}
 
       <section>
         <SectionTitle>Paiements récents (30 jours)</SectionTitle>
@@ -190,13 +225,15 @@ function Card({
 }: {
   label: string;
   value: string;
-  accent?: 'green' | 'purple';
+  accent?: 'green' | 'purple' | 'yellow';
 }) {
   const border =
     accent === 'green'
       ? 'border-[#238636]'
       : accent === 'purple'
       ? 'border-[#a371f7]'
+      : accent === 'yellow'
+      ? 'border-[#d29922]'
       : 'border-[#21262d]';
   return (
     <div className={`rounded-lg border ${border} bg-[#0d1117] p-4`}>
