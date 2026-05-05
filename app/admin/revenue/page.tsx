@@ -69,18 +69,8 @@ export default async function RevenuePage() {
             { key: 'customerEmail', label: 'Email' },
             { key: 'customerName', label: 'Nom' },
             { key: 'plan', label: 'Plan' },
-            {
-              key: 'amount',
-              label: 'Montant',
-              align: 'right',
-              format: (v: number) =>
-                `${(v as number).toFixed(2)} ${(v as unknown as Subscription).currency || ''}`.toUpperCase(),
-            },
-            {
-              key: 'currentPeriodEnd',
-              label: 'Renouv.',
-              format: (v: string) => fmtDate(v),
-            },
+            { key: 'amount', label: 'Montant', align: 'right' },
+            { key: 'currentPeriodEnd', label: 'Renouv.' },
           ]}
           renderCell={(row, col) => {
             if (col.key === 'amount') {
@@ -90,7 +80,7 @@ export default async function RevenuePage() {
                 </span>
               );
             }
-            const v = (row as unknown as Record<string, unknown>)[col.key];
+            const v = (row as unknown as Record<string, unknown>)[String(col.key)];
             if (col.key === 'currentPeriodEnd' || col.key === 'created') {
               return <span>{fmtDate(v as string)}</span>;
             }
@@ -119,7 +109,7 @@ export default async function RevenuePage() {
                 </span>
               );
             }
-            const v = (row as unknown as Record<string, unknown>)[col.key];
+            const v = (row as unknown as Record<string, unknown>)[String(col.key)];
             return <span>{(v as string) || '—'}</span>;
           }}
           empty="Aucun paiement sur 30 jours"
@@ -133,7 +123,6 @@ type Column<T> = {
   key: keyof T | string;
   label: string;
   align?: 'left' | 'right';
-  format?: (v: unknown) => string;
 };
 
 function Table<T>({
