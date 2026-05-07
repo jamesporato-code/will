@@ -11,6 +11,7 @@ const navItems: { href: string; label: string }[] = [
   { href: '/admin/users', label: 'Users' },
   { href: '/admin/modules', label: 'Modules' },
   { href: '/admin/cards', label: 'Cartes outils & prompts' },
+  { href: '/admin/actu', label: 'Actu IA du jour' },
   { href: '/admin/trials', label: 'Trials' },
   { href: '/admin/payment-issues', label: 'Payment issues' },
   { href: '/admin/revenue', label: 'Revenue' },
